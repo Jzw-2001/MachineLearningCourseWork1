@@ -16,7 +16,7 @@ from models import NeuralNetwork
 from utils import debug_log
 
 
-def train(train_params, batch_size):
+def train(train_params, batch_size, epoch):
     model.train()
     train_loss = 0
     train_mae = 0
@@ -58,6 +58,9 @@ def train(train_params, batch_size):
         train_loss, train_mae, train_rmse))
     debug_log('Train set: Average loss: {:.4f}, MAE: {:.4f}, RMSE: {:.4f}'.format(
         train_loss, train_mae, train_rmse), train_params['log_file'])
+    
+    # os.makedirs(os.path.dirname(train_params['pkl_file_path']), exist_ok=True)
+    # torch.save(model.state_dict(), train_params['pkl_file_path'])
 
 def test():
     model.eval()
@@ -100,18 +103,44 @@ def test():
     
     debug_log('Test set: Average loss: {:.4f}, MAE: {:.4f}, RMSE: {:.4f}'.format(
         test_loss, test_mae, test_rmse), train_params['log_file'])
+    
+    return accuracy_test, test_loss, test_mae, test_rmse
 
 
 train_params = yaml.load(open('trainparams.yaml', 'r'), Loader=yaml.FullLoader)
 
 # load the dataset
-dataset = SeoulBikeDataset(train_params['dataset_dir'])
-train_size = int(len(dataset) *
-    (train_params['train_ratio'] + train_params['val_ratio']))
-test_size = len(dataset) - train_size
-train_dataset, test_dataset = data.random_split(dataset, [train_size, test_size])
+# dataset = SeoulBikeDataset(train_params['dataset_dir'])
+# train_size = int(len(dataset) *
+#     (train_params['train_ratio'] + train_params['val_ratio']))
+# test_size = len(dataset) - train_size
+# train_dataset, test_dataset = data.random_split(dataset, [train_size, test_size])
 
-# load the model
+# # load the model
+# model = NeuralNetwork(
+#     nfeat = dataset[0][0].shape[0],
+#     nhid = train_params['hidden_units'],
+#     nlayers = train_params['n_layers'],
+#     dropout = train_params['dropout'],
+#     alpha = train_params['alpha'],
+#     training = True
+# )
+
+# optimizer = optim.SGD(model.parameters(), lr=train_params['lr'], weight_decay=train_params['weight_decay'])
+# model = model.cuda()
+
+# for epoch in range(train_params['epochs']):
+#     debug_log('Epoch {}'.format(epoch), train_params['log_file'])
+#     # train the model
+#     train(train_params, batch_size=train_params['batch_size'])
+#     # test the model
+#     test()
+
+
+# load dataset
+dataset = SeoulBikeDataset(train_params['dataset_dir'])
+
+# load model
 model = NeuralNetwork(
     nfeat = dataset[0][0].shape[0],
     nhid = train_params['hidden_units'],
@@ -120,37 +149,84 @@ model = NeuralNetwork(
     alpha = train_params['alpha'],
     training = True
 )
-
-optimizer = optim.SGD(model.parameters(), lr=train_params['lr'], weight_decay=train_params['weight_decay'])
 model = model.cuda()
 
-# k-fold cross validation
-# k = 5
-# batch_size = 256
-# train_size = len(train_dataset)
-# test_size = len(test_dataset)
-# for i in range(k):
-#     print("Fold:", i)
-#     # split the train dataset into train and val
-#     val_size = int(train_size / k)
-#     train_size = train_size - val_size
-#     train_dataset, val_dataset = data.random_split(train_dataset, [train_size, val_size])
-#     # train the model
-#     for epoch in range(train_params['epochs']):
-#         debug_log('Epoch {}'.format(epoch), train_params['log_file'])
-#         # train the model
-#         train(train_params, batch_size=batch_size)
-#         # test the model
-#         test()
-#     # merge the train and val dataset
-#     train_dataset = data.ConcatDataset([train_dataset, val_dataset])
-#     train_size = len(train_dataset)
-#     # test the model
-#     test()
+# random suffle the dataset
+random.shuffle(dataset)
 
-for epoch in range(train_params['epochs']):
-    debug_log('Epoch {}'.format(epoch), train_params['log_file'])
-    # train the model
-    train(train_params, batch_size=train_params['batch_size'])
-    # test the model
-    test()
+# k-fold cross validation
+k = train_params['k_fold']
+
+best_accuracy = []
+best_test_loss = []
+best_test_mae = []
+best_test_rmse = []
+
+for i in range(k):
+    print("k-fold cross validation:", i)
+    test_size = int(len(dataset) / k)
+    train_size = len(dataset) - test_size
+
+    # train_dataset, test_dataset = data.random_split(dataset, [train_size, test_size])
+    test_dataset = dataset[i*test_size:(i+1)*test_size]
+    train_dataset = dataset[0:i*test_size] + dataset[(i+1)*test_size:len(dataset)]
+
+    optimizer = optim.SGD(model.parameters(), lr=train_params['lr'], weight_decay=train_params['weight_decay'])
+
+    for epoch in range(train_params['epochs']):
+        debug_log('Epoch {}'.format(epoch), train_params['log_file'])
+        # train the model
+        train(train_params, batch_size=train_params['batch_size'], epoch=epoch)
+        # test the model
+        result = test()
+        accuracy_test, test_loss, test_mae, test_rmse = result
+        best_accuracy.append(accuracy_test)
+        best_test_loss.append(test_loss)
+        best_test_mae.append(test_mae)
+        best_test_rmse.append(test_rmse)
+
+    print("k-fold cross validation:", i, "finished")
+    debug_log("k-fold cross validation: " + str(i) + " finished", train_params['log_file'])
+
+print("all k-fold cross validation finished")
+debug_log("all k-fold cross validation finished", train_params['log_file'])
+print("best accuracy:")
+for i in range(len(best_accuracy)):
+    print(best_accuracy[i])
+print("best test loss:")
+for i in range(len(best_test_loss)):
+    print(best_test_loss[i])
+print("best test mae:")
+for i in range(len(best_test_mae)):
+    print(best_test_mae[i])
+print("best test rmse:")
+for i in range(len(best_test_rmse)):
+    print(best_test_rmse[i])
+print("average best accuracy:")
+print(np.mean(best_accuracy))
+print("average best test loss:")
+print(np.mean(best_test_loss))
+print("average best test mae:")
+print(np.mean(best_test_mae))
+print("average best test rmse:")
+print(np.mean(best_test_rmse))
+debug_log("best accuracy:", train_params['log_file'])
+for i in range(len(best_accuracy)):
+    debug_log(str(best_accuracy[i]), train_params['log_file'])
+debug_log("best test loss:", train_params['log_file'])
+for i in range(len(best_test_loss)):
+    debug_log(str(best_test_loss[i]), train_params['log_file'])
+debug_log("best test mae:", train_params['log_file'])
+for i in range(len(best_test_mae)):
+    debug_log(str(best_test_mae[i]), train_params['log_file'])
+debug_log("best test rmse:", train_params['log_file'])
+for i in range(len(best_test_rmse)):
+    debug_log(str(best_test_rmse[i]), train_params['log_file'])
+debug_log("average best accuracy:", train_params['log_file'])
+debug_log(str(np.mean(best_accuracy)), train_params['log_file'])
+debug_log("average best test loss:", train_params['log_file'])
+debug_log(str(np.mean(best_test_loss)), train_params['log_file'])
+debug_log("average best test mae:", train_params['log_file'])
+debug_log(str(np.mean(best_test_mae)), train_params['log_file'])
+debug_log("average best test rmse:", train_params['log_file'])
+debug_log(str(np.mean(best_test_rmse)), train_params['log_file'])
