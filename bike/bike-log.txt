@@ -49949,3 +49949,104 @@ Train set: Average loss: 904776.4353, MAE: 699.4907, RMSE: 949.7910
 Test set: Average loss: 931343.9375, MAE: 718.9496, RMSE: 965.0616
 Epoch 12
 Train set: Average loss: 915017.2098, MAE: 703.9386, RMSE: 955.1133
+Epoch 0
+Train set: Average loss: 1049999.3393, MAE: 786.4062, RMSE: 1023.4780
+Test set: Average loss: 64009.8320, MAE: 209.0051, RMSE: 253.0016
+Epoch 1
+Train set: Average loss: 1040390.5000, MAE: 781.9848, RMSE: 1018.4865
+Test set: Average loss: 62511.7617, MAE: 205.9300, RMSE: 250.0235
+Epoch 2
+Train set: Average loss: 1021674.1138, MAE: 775.1516, RMSE: 1009.6182
+Test set: Average loss: 61851.7500, MAE: 204.8584, RMSE: 248.7001
+Epoch 3
+Train set: Average loss: 1003883.2254, MAE: 768.1599, RMSE: 1000.3761
+Test set: Average loss: 61207.0117, MAE: 204.2415, RMSE: 247.4005
+Epoch 4
+Train set: Average loss: 989596.2723, MAE: 763.7158, RMSE: 994.2150
+Test set: Average loss: 60791.7617, MAE: 204.3056, RMSE: 246.5599
+Epoch 5
+Train set: Average loss: 952635.7366, MAE: 749.9460, RMSE: 974.8931
+Test set: Average loss: 60062.2891, MAE: 204.4659, RMSE: 245.0761
+Epoch 6
+Train set: Average loss: 904258.1228, MAE: 729.8923, RMSE: 949.6930
+Test set: Average loss: 59581.9609, MAE: 204.9444, RMSE: 244.0942
+Epoch 7
+Train set: Average loss: 813702.3661, MAE: 694.2366, RMSE: 900.7383
+Test set: Average loss: 58635.8867, MAE: 203.8159, RMSE: 242.1485
+Epoch 8
+Train set: Average loss: 668918.7567, MAE: 629.1330, RMSE: 816.7618
+Test set: Average loss: 57577.2305, MAE: 202.3917, RMSE: 239.9526
+Epoch 9
+Train set: Average loss: 530474.3516, MAE: 552.2350, RMSE: 725.6693
+Test set: Average loss: 61613.0938, MAE: 209.8789, RMSE: 248.2198
+Epoch 10
+Train set: Average loss: 384827.7701, MAE: 458.5858, RMSE: 618.8669
+Test set: Average loss: 64981.1133, MAE: 215.4347, RMSE: 254.9139
+Epoch 11
+Train set: Average loss: 304472.7500, MAE: 401.5727, RMSE: 550.1405
+Test set: Average loss: 66304.2812, MAE: 217.1281, RMSE: 257.4962
+Epoch 12
+Train set: Average loss: 248730.0647, MAE: 363.8800, RMSE: 497.5865
+Test set: Average loss: 62238.9570, MAE: 211.5200, RMSE: 249.4774
+Epoch 13
+Train set: Average loss: 232129.3666, MAE: 350.6149, RMSE: 480.4150
+Test set: Average loss: 61724.2617, MAE: 210.3743, RMSE: 248.4437
+Epoch 14
+Train set: Average loss: 217720.0128, MAE: 336.5806, RMSE: 465.7573
+Test set: Average loss: 61118.5625, MAE: 209.7369, RMSE: 247.2217
+Epoch 15
+Train set: Average loss: 209063.0770, MAE: 329.5499, RMSE: 456.1421
+Test set: Average loss: 49239.8672, MAE: 189.3062, RMSE: 221.9006
+Epoch 16
+Train set: Average loss: 200362.2835, MAE: 322.5513, RMSE: 446.7226
+Test set: Average loss: 44772.2852, MAE: 180.0599, RMSE: 211.5946
+Epoch 17
+Train set: Average loss: 195823.1010, MAE: 318.0565, RMSE: 442.0339
+Test set: Average loss: 47542.6445, MAE: 186.4960, RMSE: 218.0428
+Epoch 18
+Train set: Average loss: 193255.3320, MAE: 314.9810, RMSE: 438.4607
+Test set: Average loss: 45812.9062, MAE: 183.0917, RMSE: 214.0395
+Epoch 19
+Train set: Average loss: 185227.3990, MAE: 308.0916, RMSE: 429.6301
+Test set: Average loss: 39641.6016, MAE: 167.4293, RMSE: 199.1020
+Epoch 20
+Train set: Average loss: 187545.7511, MAE: 309.6013, RMSE: 432.0620
+Test set: Average loss: 37200.7656, MAE: 162.5623, RMSE: 192.8750
+Epoch 21
+Train set: Average loss: 184383.5033, MAE: 309.0689, RMSE: 428.6028
+Test set: Average loss: 46099.6836, MAE: 182.3016, RMSE: 214.7084
+Epoch 22
+Train set: Average loss: 181031.0452, MAE: 303.9262, RMSE: 424.4757
+Test set: Average loss: 39549.2422, MAE: 168.9276, RMSE: 198.8699
+Epoch 23
+Train set: Average loss: 179290.5340, MAE: 301.2134, RMSE: 421.9372
+Test set: Average loss: 40278.6875, MAE: 171.7488, RMSE: 200.6955
+Epoch 24
+Train set: Average loss: 175748.3580, MAE: 298.9704, RMSE: 417.9488
+Test set: Average loss: 35747.8555, MAE: 162.0837, RMSE: 189.0710
+Epoch 25
+Train set: Average loss: 175450.2651, MAE: 300.2751, RMSE: 418.1616
+Test set: Average loss: 37232.2266, MAE: 165.2692, RMSE: 192.9565
+Epoch 26
+Train set: Average loss: 174796.2104, MAE: 298.8547, RMSE: 417.1721
+Test set: Average loss: 31435.7754, MAE: 149.9619, RMSE: 177.3014
+Epoch 27
+Train set: Average loss: 173253.0273, MAE: 297.5685, RMSE: 414.8791
+Test set: Average loss: 27488.0352, MAE: 139.6598, RMSE: 165.7952
+Epoch 28
+Train set: Average loss: 174260.2517, MAE: 298.0988, RMSE: 416.4298
+Test set: Average loss: 39791.1484, MAE: 169.7808, RMSE: 199.4772
+Epoch 29
+Train set: Average loss: 165922.4191, MAE: 291.9953, RMSE: 406.4467
+Test set: Average loss: 38364.1445, MAE: 167.7563, RMSE: 195.8677
+Epoch 30
+Train set: Average loss: 173768.0893, MAE: 295.3177, RMSE: 416.1448
+Test set: Average loss: 38993.2578, MAE: 168.4354, RMSE: 197.4671
+Epoch 31
+Train set: Average loss: 172329.6116, MAE: 296.3057, RMSE: 414.3638
+Test set: Average loss: 32600.5625, MAE: 153.3784, RMSE: 180.5563
+Epoch 32
+Train set: Average loss: 171247.7095, MAE: 293.5340, RMSE: 413.1143
+Test set: Average loss: 40692.6094, MAE: 171.1035, RMSE: 201.7241
+Epoch 33
+Train set: Average loss: 166101.5628, MAE: 291.2512, RMSE: 406.5988

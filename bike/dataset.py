@@ -19,10 +19,7 @@ def check_weekday(date_string):
 
 class SeoulBikeDataset(data.Dataset):
     def __init__(self, file_dir):
-
-        # file_dir represents the path to the csv file
         super(SeoulBikeDataset, self).__init__()
-
 
         with open(file_dir, 'r') as f:
             self.data = pd.read_csv(f)
@@ -48,13 +45,20 @@ class SeoulBikeDataset(data.Dataset):
         self.holiday = self.holiday.map(HOLIDAY2NUM)
         self.functioning_day = self.functioning_day.map(FUNCTIONINGDAY2NUM)
 
+        self.shuffle_idx = list(range(len(self.data)))
+        random.shuffle(self.shuffle_idx)
+        print("shuffle_idx", self.shuffle_idx)
+    
 
+    
     def __len__(self):
         return len(self.data)
 
     
 
     def __getitem__(self, index):
+        # index = self.shuffle_idx[index]
+        # print("index", index)
         hour_one_hot = np.zeros(24)
         hour_one_hot[self.hour[index]] = 1
         season_one_hot = np.zeros(4)
@@ -65,7 +69,6 @@ class SeoulBikeDataset(data.Dataset):
         functioning_day_one_hot[self.functioning_day[index]] = 1
         is_weekday_one_hot = np.zeros(2)
         is_weekday_one_hot[self.is_weekday[index]] = 1
-
         features = torch.tensor([
             float(self.temperature[index]),
             float(self.humidity[index]),

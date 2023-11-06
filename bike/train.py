@@ -152,7 +152,7 @@ model = NeuralNetwork(
 model = model.cuda()
 
 # random suffle the dataset
-random.shuffle(dataset)
+# random.shuffle(dataset)
 
 # k-fold cross validation
 k = train_params['k_fold']
@@ -168,8 +168,10 @@ for i in range(k):
     train_size = len(dataset) - test_size
 
     # train_dataset, test_dataset = data.random_split(dataset, [train_size, test_size])
-    test_dataset = dataset[i*test_size:(i+1)*test_size]
-    train_dataset = dataset[0:i*test_size] + dataset[(i+1)*test_size:len(dataset)]
+    # test_dataset = dataset[int(i*test_size):int((i+1)*test_size)]
+    # train_dataset = dataset[0:int(i*test_size)] + dataset[int((i+1)*test_size):len(dataset)]
+    test_dataset = data.Subset(dataset, range(int(i*test_size), int((i+1)*test_size)))
+    train_dataset = data.Subset(dataset, list(range(0, int(i*test_size))) + list(range(int((i+1)*test_size), len(dataset))))
 
     optimizer = optim.SGD(model.parameters(), lr=train_params['lr'], weight_decay=train_params['weight_decay'])
 
