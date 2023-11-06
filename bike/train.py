@@ -124,6 +124,30 @@ model = NeuralNetwork(
 optimizer = optim.SGD(model.parameters(), lr=train_params['lr'], weight_decay=train_params['weight_decay'])
 model = model.cuda()
 
+# k-fold cross validation
+# k = 5
+# batch_size = 256
+# train_size = len(train_dataset)
+# test_size = len(test_dataset)
+# for i in range(k):
+#     print("Fold:", i)
+#     # split the train dataset into train and val
+#     val_size = int(train_size / k)
+#     train_size = train_size - val_size
+#     train_dataset, val_dataset = data.random_split(train_dataset, [train_size, val_size])
+#     # train the model
+#     for epoch in range(train_params['epochs']):
+#         debug_log('Epoch {}'.format(epoch), train_params['log_file'])
+#         # train the model
+#         train(train_params, batch_size=batch_size)
+#         # test the model
+#         test()
+#     # merge the train and val dataset
+#     train_dataset = data.ConcatDataset([train_dataset, val_dataset])
+#     train_size = len(train_dataset)
+#     # test the model
+#     test()
+
 for epoch in range(train_params['epochs']):
     debug_log('Epoch {}'.format(epoch), train_params['log_file'])
     # train the model

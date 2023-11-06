@@ -49911,3 +49911,41 @@ Train set: Average loss: 100783.3198, MAE: 214.1543, RMSE: 316.5740
 Test set: Average loss: 55131.7773, MAE: 156.5733, RMSE: 234.8016
 Epoch 624
 Train set: Average loss: 102746.0728, MAE: 216.9087, RMSE: 319.3291
+Epoch 0
+Train set: Average loss: 908717.7612, MAE: 701.1526, RMSE: 952.4519
+Test set: Average loss: 931573.8125, MAE: 719.1008, RMSE: 965.1807
+Epoch 1
+Train set: Average loss: 905182.1473, MAE: 698.8342, RMSE: 949.6684
+Test set: Average loss: 931523.8125, MAE: 719.0680, RMSE: 965.1548
+Epoch 2
+Train set: Average loss: 900100.4308, MAE: 697.5817, RMSE: 946.9887
+Test set: Average loss: 931495.6875, MAE: 719.0495, RMSE: 965.1403
+Epoch 3
+Train set: Average loss: 904541.8504, MAE: 699.9143, RMSE: 949.3266
+Test set: Average loss: 931480.3125, MAE: 719.0394, RMSE: 965.1323
+Epoch 4
+Train set: Average loss: 903930.2924, MAE: 699.3395, RMSE: 949.3470
+Test set: Average loss: 931457.8125, MAE: 719.0245, RMSE: 965.1206
+Epoch 5
+Train set: Average loss: 906196.7254, MAE: 700.1894, RMSE: 951.0098
+Test set: Average loss: 931438.1875, MAE: 719.0117, RMSE: 965.1105
+Epoch 6
+Train set: Average loss: 908077.0558, MAE: 700.4450, RMSE: 951.6519
+Test set: Average loss: 931423.1875, MAE: 719.0018, RMSE: 965.1027
+Epoch 7
+Train set: Average loss: 906303.6987, MAE: 700.3824, RMSE: 950.6826
+Test set: Average loss: 931403.5000, MAE: 718.9889, RMSE: 965.0925
+Epoch 8
+Train set: Average loss: 903737.1250, MAE: 699.6600, RMSE: 949.4328
+Test set: Average loss: 931389.0000, MAE: 718.9793, RMSE: 965.0850
+Epoch 9
+Train set: Average loss: 908142.6540, MAE: 701.0297, RMSE: 951.8310
+Test set: Average loss: 931376.0000, MAE: 718.9708, RMSE: 965.0782
+Epoch 10
+Train set: Average loss: 908355.8929, MAE: 701.6752, RMSE: 952.1471
+Test set: Average loss: 931358.6875, MAE: 718.9594, RMSE: 965.0693
+Epoch 11
+Train set: Average loss: 904776.4353, MAE: 699.4907, RMSE: 949.7910
+Test set: Average loss: 931343.9375, MAE: 718.9496, RMSE: 965.0616
+Epoch 12
+Train set: Average loss: 915017.2098, MAE: 703.9386, RMSE: 955.1133
