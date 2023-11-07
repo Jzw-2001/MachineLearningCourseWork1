@@ -47,7 +47,7 @@ class SeoulBikeDataset(data.Dataset):
 
         self.shuffle_idx = list(range(len(self.data)))
         random.shuffle(self.shuffle_idx)
-        print("shuffle_idx", self.shuffle_idx)
+        # print("shuffle_idx", self.shuffle_idx)
     
 
     
@@ -57,7 +57,7 @@ class SeoulBikeDataset(data.Dataset):
     
 
     def __getitem__(self, index):
-        # index = self.shuffle_idx[index]
+        index = self.shuffle_idx[index]
         # print("index", index)
         hour_one_hot = np.zeros(24)
         hour_one_hot[self.hour[index]] = 1

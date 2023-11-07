@@ -11,7 +11,7 @@ from torch.utils import data
 from torch.utils.data import DataLoader
 from sklearn.metrics import r2_score
 
-from dataset import SeoulBikeDataset
+from dataset_processed import SeoulBikeDataset
 from models import NeuralNetwork
 from utils import debug_log
 
@@ -49,9 +49,9 @@ def train(train_params, batch_size, epoch):
     # print("train_loss:", train_loss)
     # print("train_mae:", train_mae)
     # print("train_rmse:", train_rmse)
-    train_loss /= len(train_loader)
-    train_mae /= len(train_loader)
-    train_rmse /= len(train_loader)
+    train_loss /= len(train_loader) * batch_size
+    train_mae /= len(train_loader) * batch_size
+    train_rmse /= len(train_loader) * batch_size
     accuracy_train /= len(train_loader)
     print("Train accuracy:", accuracy_train)
     print('Train set: Average loss: {:.4f}, MAE: {:.4f}, RMSE: {:.4f}'.format(
@@ -91,13 +91,14 @@ def test():
     # print("targets",targets)
 
 
-    test_loss = F.mse_loss(outputs, targets)
-    test_mae = F.l1_loss(outputs, targets)
-    test_rmse = torch.sqrt(F.mse_loss(outputs, targets))
+    test_loss = F.mse_loss(outputs, targets) / len(test_loader)
+    test_mae = F.l1_loss(outputs, targets) / len(test_loader)
+    test_rmse = torch.sqrt(F.mse_loss(outputs, targets)) / len(test_loader)
     accuracy_test = r2_score(targets.cpu().detach().numpy(), outputs.cpu().detach().numpy())
 
 
     print("Test accuracy:", accuracy_test)
+    debug_log("Test accuracy: {}".format(accuracy_test), train_params['log_file'])
     print('Test set: Average loss: {:.4f}, MAE: {:.4f}, RMSE: {:.4f}'.format(
         test_loss, test_mae, test_rmse))
     
@@ -157,12 +158,18 @@ model = model.cuda()
 # k-fold cross validation
 k = train_params['k_fold']
 
-best_accuracy = []
-best_test_loss = []
-best_test_mae = []
-best_test_rmse = []
+best_accuracy_k = []
+best_test_loss_k = []
+best_test_mae_k = []
+best_test_rmse_k = []
+
 
 for i in range(k):
+    best_accuracy = 0
+    best_test_loss = 0
+    best_test_mae = 0
+    best_test_rmse = 0
+
     print("k-fold cross validation:", i)
     test_size = int(len(dataset) / k)
     train_size = len(dataset) - test_size
@@ -182,53 +189,37 @@ for i in range(k):
         # test the model
         result = test()
         accuracy_test, test_loss, test_mae, test_rmse = result
-        best_accuracy.append(accuracy_test)
-        best_test_loss.append(test_loss)
-        best_test_mae.append(test_mae)
-        best_test_rmse.append(test_rmse)
+        if accuracy_test > best_accuracy:
+            best_accuracy = accuracy_test
+        if test_loss < best_test_loss:
+            best_test_loss = test_loss
+        if test_mae < best_test_mae:
+            best_test_mae = test_mae
+        if test_rmse < best_test_rmse:
+            best_test_rmse = test_rmse
 
     print("k-fold cross validation:", i, "finished")
     debug_log("k-fold cross validation: " + str(i) + " finished", train_params['log_file'])
+    best_accuracy_k.append(best_accuracy)
+    best_test_loss_k.append(best_test_loss)
+    best_test_mae_k.append(best_test_mae)
+    best_test_rmse_k.append(best_test_rmse)
 
 print("all k-fold cross validation finished")
 debug_log("all k-fold cross validation finished", train_params['log_file'])
-print("best accuracy:")
-for i in range(len(best_accuracy)):
-    print(best_accuracy[i])
-print("best test loss:")
-for i in range(len(best_test_loss)):
-    print(best_test_loss[i])
-print("best test mae:")
-for i in range(len(best_test_mae)):
-    print(best_test_mae[i])
-print("best test rmse:")
-for i in range(len(best_test_rmse)):
-    print(best_test_rmse[i])
-print("average best accuracy:")
-print(np.mean(best_accuracy))
-print("average best test loss:")
-print(np.mean(best_test_loss))
-print("average best test mae:")
-print(np.mean(best_test_mae))
-print("average best test rmse:")
-print(np.mean(best_test_rmse))
-debug_log("best accuracy:", train_params['log_file'])
-for i in range(len(best_accuracy)):
-    debug_log(str(best_accuracy[i]), train_params['log_file'])
-debug_log("best test loss:", train_params['log_file'])
-for i in range(len(best_test_loss)):
-    debug_log(str(best_test_loss[i]), train_params['log_file'])
-debug_log("best test mae:", train_params['log_file'])
-for i in range(len(best_test_mae)):
-    debug_log(str(best_test_mae[i]), train_params['log_file'])
-debug_log("best test rmse:", train_params['log_file'])
-for i in range(len(best_test_rmse)):
-    debug_log(str(best_test_rmse[i]), train_params['log_file'])
-debug_log("average best accuracy:", train_params['log_file'])
-debug_log(str(np.mean(best_accuracy)), train_params['log_file'])
-debug_log("average best test loss:", train_params['log_file'])
-debug_log(str(np.mean(best_test_loss)), train_params['log_file'])
-debug_log("average best test mae:", train_params['log_file'])
-debug_log(str(np.mean(best_test_mae)), train_params['log_file'])
-debug_log("average best test rmse:", train_params['log_file'])
-debug_log(str(np.mean(best_test_rmse)), train_params['log_file'])
+print("best_accuracy_k:", best_accuracy_k)
+debug_log("best_accuracy_k: " + str(best_accuracy_k), train_params['log_file'])
+print("best_test_loss_k:", best_test_loss_k)
+debug_log("best_test_loss_k: " + str(best_test_loss_k), train_params['log_file'])
+print("best_test_mae_k:", best_test_mae_k)
+debug_log("best_test_mae_k: " + str(best_test_mae_k), train_params['log_file'])
+print("best_test_rmse_k:", best_test_rmse_k)
+debug_log("best_test_rmse_k: " + str(best_test_rmse_k), train_params['log_file'])
+print("average accuracy:", np.mean(best_accuracy_k))
+debug_log("average accuracy: " + str(np.mean(best_accuracy_k)), train_params['log_file'])
+print("average test loss:", np.mean(best_test_loss_k))
+debug_log("average test loss: " + str(np.mean(best_test_loss_k)), train_params['log_file'])
+print("average test mae:", np.mean(best_test_mae_k))
+debug_log("average test mae: " + str(np.mean(best_test_mae_k)), train_params['log_file'])
+print("average test rmse:", np.mean(best_test_rmse_k))
+debug_log("average test rmse: " + str(np.mean(best_test_rmse_k)), train_params['log_file'])
