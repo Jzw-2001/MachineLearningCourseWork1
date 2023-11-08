@@ -6,12 +6,13 @@ dataset_dir: 'dataset/Shill Bidding Dataset.csv'
 
 # training parameters
 alpha: 0.001
-batch_size: 256
-lr: 0.00001
+batch_size: 512
+lr: 0.0001
 dropout: 0.5
-epochs: 10000
-hidden_units: 64
+epochs: 100
+hidden_units: 128
 weight_decay: 0.0001
+k_fold: 5
 
 # log parameters
 log_file: "bidding-log.txt"

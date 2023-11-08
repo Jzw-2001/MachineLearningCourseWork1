@@ -166,9 +166,7 @@ best_test_rmse_k = []
 
 for i in range(k):
     best_accuracy = 0
-    best_test_loss = 0
-    best_test_mae = 0
-    best_test_rmse = 0
+    best_test_loss = 999999.999
 
     print("k-fold cross validation:", i)
     test_size = int(len(dataset) / k)
@@ -210,16 +208,3 @@ debug_log("all k-fold cross validation finished", train_params['log_file'])
 print("best_accuracy_k:", best_accuracy_k)
 debug_log("best_accuracy_k: " + str(best_accuracy_k), train_params['log_file'])
 print("best_test_loss_k:", best_test_loss_k)
-debug_log("best_test_loss_k: " + str(best_test_loss_k), train_params['log_file'])
-print("best_test_mae_k:", best_test_mae_k)
-debug_log("best_test_mae_k: " + str(best_test_mae_k), train_params['log_file'])
-print("best_test_rmse_k:", best_test_rmse_k)
-debug_log("best_test_rmse_k: " + str(best_test_rmse_k), train_params['log_file'])
-print("average accuracy:", np.mean(best_accuracy_k))
-debug_log("average accuracy: " + str(np.mean(best_accuracy_k)), train_params['log_file'])
-print("average test loss:", np.mean(best_test_loss_k))
-debug_log("average test loss: " + str(np.mean(best_test_loss_k)), train_params['log_file'])
-print("average test mae:", np.mean(best_test_mae_k))
-debug_log("average test mae: " + str(np.mean(best_test_mae_k)), train_params['log_file'])
-print("average test rmse:", np.mean(best_test_rmse_k))
-debug_log("average test rmse: " + str(np.mean(best_test_rmse_k)), train_params['log_file'])

@@ -30,11 +30,16 @@ class ShillBiddingDataset(data.Dataset):
             self.early_bidding = self.data['Early_Bidding']
             self.winning_ratio = self.data['Winning_Ratio']
             self.auction_duration = self.data['Auction_Duration']
+
+        self.shuffle_idx = list(range(len(self.data)))
+        random.shuffle(self.shuffle_idx)
             
     def __len__(self):
         return len(self.data)
     
     def __getitem__(self, index):
+        index = self.shuffle_idx[index]
+        
         features = torch.tensor([
             self.bidder_tendency[index],
             self.bidding_ratio[index],

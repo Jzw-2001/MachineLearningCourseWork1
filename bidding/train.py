@@ -95,6 +95,8 @@ def test():
         test_loss))
     debug_log('Test set: Average loss: {:.4f}'.format(
         test_loss), train_params['log_file'])
+    
+    return accuracy_test, test_loss
 
 
 
@@ -114,13 +116,53 @@ model = NeuralNetwork(
     training = True
 )
 
-optimizer = optim.SGD(model.parameters(), lr=train_params['lr'], weight_decay=train_params['weight_decay'])
+# optimizer = optim.SGD(model.parameters(), lr=train_params['lr'], weight_decay=train_params['weight_decay'])
 
 model.cuda()
 
-for epoch in range(train_params['epochs']):
-    debug_log('Epoch {}'.format(epoch), train_params['log_file'])
-    # train the model
-    train(train_params, batch_size=train_params['batch_size'])
-    # test the model
-    test()
+k = train_params['k_fold']
+
+best_accuracy_k = []
+best_test_loss_k = []
+
+
+for i in range(k):
+    best_accuracy = 0
+    best_test_loss = 999999.999
+
+    print("k-fold cross validation:", i)
+    test_size = int(len(dataset) / k)
+    train_size = len(dataset) - test_size
+
+    test_dataset = data.Subset(dataset, range(int(i*test_size), int((i+1)*test_size)))
+    train_dataset = data.Subset(dataset, list(range(0, int(i*test_size))) + list(range(int((i+1)*test_size), len(dataset))))
+
+    optimizer = optim.SGD(model.parameters(), lr=train_params['lr'], weight_decay=train_params['weight_decay'])
+
+    for epoch in range(train_params['epochs']):
+        debug_log('Epoch {}'.format(epoch), train_params['log_file'])
+        # train the model
+        train(train_params, batch_size=train_params['batch_size'])
+        # test the model
+        result = test()
+        accuracy_test, test_loss = result
+        if accuracy_test > best_accuracy:
+            best_accuracy = accuracy_test
+        if test_loss < best_test_loss:
+            best_test_loss = test_loss
+
+    print("k-fold cross validation:", i, "finished")
+    debug_log("k-fold cross validation: " + str(i) + " finished", train_params['log_file'])
+    best_accuracy_k.append(best_accuracy)
+    best_test_loss_k.append(best_test_loss)
+
+print("all k-fold cross validation finished")
+debug_log("all k-fold cross validation finished", train_params['log_file'])
+print("best_accuracy_k:", max(best_accuracy_k))
+debug_log("best_accuracy_k: " + str(best_accuracy_k), train_params['log_file'])
+print("best_test_loss_k:", min(best_test_loss_k))
+debug_log("best_test_loss_k: " + str(best_test_loss_k), train_params['log_file'])
+print("average best accuracy:", sum(best_accuracy_k)/len(best_accuracy_k))
+debug_log("average best accuracy: " + str(sum(best_accuracy_k)/len(best_accuracy_k)), train_params['log_file'])
+print("average best test loss:", sum(best_test_loss_k)/len(best_test_loss_k))
+debug_log("average best test loss: " + str(sum(best_test_loss_k)/len(best_test_loss_k)), train_params['log_file'])
